@@ -230,8 +230,14 @@ public class Main {
                 return numDate1 - numDate2;
             });
 
+            boolean isFirst = true;
             for (String trip : trips) {
-                out.println(trip);
+                if(isFirst) {
+                    isFirst = false;
+                } else {
+                    out.print("\n");
+                }
+                out.print(trip);
             }
 
             in.close();
