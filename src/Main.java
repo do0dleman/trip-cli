@@ -2,13 +2,15 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
 
-// TODO: Add edit and add commands
+// TODO: Add an add commands
 public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
     static String filename = "db.csv";
     static String arg = "";
+
+    static ArgValidator validator = new ArgValidator();
 
     public static void main(String[] args) {
         String[] commandLine;
@@ -93,30 +95,12 @@ public class Main {
     }
 
     public static void edit() {
-        if(arg.isBlank()) {
-            System.out.println("This command requires 1 argument");
+        if(!validator.isEditArgValid(arg)) {
             return;
         }
 
-        String tripLine = arg;
-        String[] tripSplit = tripLine.split(";");
-        if(tripSplit.length != 6) {
-            System.out.println("wrong field count");
-            return;
-        }
-
+        String[] tripSplit = arg.split(";");
         String id = tripSplit[0];
-        try {
-            int num = Integer.parseInt(id);
-
-            if(num < 100 || num > 999) {
-                System.out.println("Id has to be a 3 digit number");
-                return;
-            }
-        } catch (Exception ex) {
-            System.out.println("Error, id has to be a number");
-            return;
-        }
 
         File f = new File(filename);
         File tempFile = new File("temp.txt");
@@ -158,7 +142,6 @@ public class Main {
                             outS.append(";");
                         }
                     }
-                    System.out.println(outS);
                     out.println(outS);
                     continue;
                 }
@@ -252,20 +235,8 @@ public class Main {
     }
 
     static public  void find() {
-        if(arg.isBlank()) {
-            System.out.println("This command requires 1 argument");
-            return;
-        }
-        float price;
-        try {
-            price = Float.parseFloat(arg);
-
-            if(price < 0) {
-                System.out.println("wrong price");
-                return;
-            }
-        } catch (Exception ex) {
-            System.out.println("Error, command argument has to be a number");
+        float price = validator.getValidFindPrice(arg);
+        if(price == -1) {
             return;
         }
 
@@ -340,23 +311,11 @@ public class Main {
 
 
     public static void del() {
-        if(arg.isBlank()) {
-            System.out.println("This command requires 1 argument");
+        if(!validator.isDelArgValid(arg)) {
             return;
         }
 
         String id = arg;
-        try {
-            int num = Integer.parseInt(arg);
-
-            if(num < 100 || num > 999) {
-                System.out.println("Id has to be a 3 digit number");
-                return;
-            }
-        } catch (Exception ex) {
-            System.out.println("Error, command argument has to be a number");
-            return;
-        }
 
         File f = new File(filename);
         File tempFile = new File("temp.txt");
