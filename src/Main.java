@@ -111,6 +111,7 @@ public class Main {
         } catch (Exception ex) {
             System.out.println("Error during adding: " + ex.getMessage());
         }
+        System.out.println("added");
     }
 
     public static void edit() {
