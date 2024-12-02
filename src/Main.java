@@ -29,6 +29,12 @@ public class Main {
                     case "sort":
                         sort();
                         break;
+                    case "add":
+                        print();
+                        break;
+                    case "edit":
+                        edit();
+                        break;
                     case "del":
                         del();
                         break;
@@ -84,6 +90,104 @@ public class Main {
         }
 
         printTableFooter();
+    }
+
+    public static void edit() {
+        if(arg.isBlank()) {
+            System.out.println("This command requires 1 argument");
+            return;
+        }
+
+        String tripLine = arg;
+        String[] tripSplit = tripLine.split(";");
+        if(tripSplit.length != 6) {
+            System.out.println("wrong field count");
+            return;
+        }
+
+        String id = tripSplit[0];
+        try {
+            int num = Integer.parseInt(id);
+
+            if(num < 100 || num > 999) {
+                System.out.println("Id has to be a 3 digit number");
+                return;
+            }
+        } catch (Exception ex) {
+            System.out.println("Error, id has to be a number");
+            return;
+        }
+
+        File f = new File(filename);
+        File tempFile = new File("temp.txt");
+
+        boolean isIdFound = false;
+
+        if (!f.exists()) {
+            System.out.println("The file db.csv does not exist");
+            return;
+        }
+
+        try {
+            Scanner in = new Scanner(f);
+            PrintWriter out = new PrintWriter(new FileWriter(tempFile));
+
+            String line;
+            Vector<String> trips = new Vector<>();
+
+            while (in.hasNextLine()) {
+                line = in.nextLine();
+                trips.addElement(line);
+            }
+
+            for (String t : trips) {
+                String[] tSplit = t.split(";");
+                if(tSplit[0].equals(id)) {
+                    isIdFound = true;
+                    StringBuilder outS = new StringBuilder();
+
+                    for (int i = 0; i < tSplit.length; i++) {
+                        if(tripSplit[i].isBlank()) {
+                            outS.append(tSplit[i]);
+                        } else {
+                            System.out.println(tripSplit[i]);
+                            outS.append(tripSplit[i]);
+                        }
+
+                        if (i != tSplit.length - 1) {
+                            outS.append(";");
+                        }
+                    }
+                    System.out.println(outS);
+                    out.println(outS);
+                    continue;
+                }
+                out.println(t);
+            }
+
+            in.close();
+            out.close();
+
+            System.gc();
+
+            if(!isIdFound) {
+                System.out.println("wrong id");
+            }
+            if (f.delete()) {
+                if (tempFile.renameTo(f)) {
+                    if(isIdFound) {
+                        System.out.println("changed");
+                    }
+                } else {
+                    System.out.println("Failed to rename temp file");
+                }
+            } else {
+                System.out.println("Failed to delete original file");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error during deletion: " + ex.getMessage());
+        }
     }
 
     public static void sort() {
