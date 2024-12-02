@@ -10,6 +10,7 @@ public class Main {
     static String arg = "";
 
     static ArgValidator validator = new ArgValidator();
+    static Utils utils = new Utils();
 
     public static void main(String[] args) {
         String[] commandLine;
@@ -106,7 +107,7 @@ public class Main {
 
         try {
             PrintWriter out = new PrintWriter(new FileWriter(filename, true));
-            out.append("\n").append(arg);
+            out.append("\n").append(utils.formatTripFields(arg));
             out.close();
         } catch (Exception ex) {
             System.out.println("Error during adding: " + ex.getMessage());
@@ -162,7 +163,7 @@ public class Main {
                             outS.append(";");
                         }
                     }
-                    out.println(outS);
+                    out.println(utils.formatTripFields(outS.toString()));
                     continue;
                 }
                 out.println(t);
