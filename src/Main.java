@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
 
-// TODO: Add an add commands
 public class Main {
 
     static Scanner sc = new Scanner(System.in);
@@ -32,7 +31,7 @@ public class Main {
                         sort();
                         break;
                     case "add":
-                        print();
+                        add();
                         break;
                     case "edit":
                         edit();
@@ -92,6 +91,26 @@ public class Main {
         }
 
         printTableFooter();
+    }
+
+    public static void add() {
+        if(!validator.isAddArgValid(arg)) {
+            return;
+        }
+
+        File f = new File(filename);
+        if (!f.exists()) {
+            System.out.println("The file db.csv does not exist");
+            return;
+        }
+
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter(filename, true));
+            out.append("\n").append(arg);
+            out.close();
+        } catch (Exception ex) {
+            System.out.println("Error during adding: " + ex.getMessage());
+        }
     }
 
     public static void edit() {
@@ -165,11 +184,11 @@ public class Main {
                     System.out.println("Failed to rename temp file");
                 }
             } else {
-                System.out.println("Failed to delete original file");
+                System.out.println("Failed to edit");
             }
 
         } catch (Exception ex) {
-            System.out.println("Error during deletion: " + ex.getMessage());
+            System.out.println("Error during editing: " + ex.getMessage());
         }
     }
 
