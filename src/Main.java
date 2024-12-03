@@ -72,11 +72,10 @@ public class Main {
     }
 
     public static void print() {
-        File f = new File(filename);
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
+        if(!utils.isDbFileExists(filename)) {
             return;
         }
+
         printTableHeader();
 
         String line;
@@ -95,13 +94,7 @@ public class Main {
     }
 
     public static void add() {
-        if(!validator.isAddArgValid(arg)) {
-            return;
-        }
-
-        File f = new File(filename);
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
+        if(!validator.isAddArgValid(arg) || !utils.isDbFileExists(filename)) {
             return;
         }
 
@@ -116,7 +109,7 @@ public class Main {
     }
 
     public static void edit() {
-        if(!validator.isEditArgValid(arg)) {
+        if(!validator.isEditArgValid(arg) || !utils.isDbFileExists(filename)) {
             return;
         }
 
@@ -127,11 +120,6 @@ public class Main {
         File tempFile = new File("temp.txt");
 
         boolean isIdFound = false;
-
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
-            return;
-        }
 
         try {
             Scanner in = new Scanner(f);
@@ -195,13 +183,12 @@ public class Main {
     }
 
     public static void sort() {
-        File f = new File(filename);
-        File tempFile = new File("temp.txt");
-
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
+        if(!utils.isDbFileExists(filename)) {
             return;
         }
+
+        File f = new File(filename);
+        File tempFile = new File("temp.txt");
 
         try {
             Scanner in = new Scanner(f);
@@ -263,15 +250,11 @@ public class Main {
 
     static public  void find() {
         float price = validator.getValidFindPrice(arg);
-        if(price == -1) {
+        if(price == -1 || !utils.isDbFileExists(filename)) {
             return;
         }
 
         File f = new File(filename);
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
-            return;
-        }
 
         printTableHeader();
         try {
@@ -304,8 +287,7 @@ public class Main {
 
     static public  void avg() {
         File f = new File(filename);
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
+        if(!utils.isDbFileExists(filename)) {
             return;
         }
 
@@ -338,7 +320,7 @@ public class Main {
 
 
     public static void del() {
-        if(!validator.isDelArgValid(arg)) {
+        if(!validator.isDelArgValid(arg) || !utils.isDbFileExists(filename)) {
             return;
         }
 
@@ -348,11 +330,6 @@ public class Main {
         File tempFile = new File("temp.txt");
 
         boolean isIdFound = false;
-
-        if (!f.exists()) {
-            System.out.println("The file db.csv does not exist");
-            return;
-        }
 
         try {
             Scanner in = new Scanner(f);

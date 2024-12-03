@@ -1,4 +1,20 @@
+import java.io.File;
+
 public class Utils {
+    public void generateDbFile(String filename) {
+
+    }
+
+    public boolean isDbFileExists(String filename) {
+        File f = new File(filename);
+        if (!f.exists()) {
+            System.out.println("The file db.csv does not exist");
+            return false;
+        }
+
+        return true;
+    }
+
     public String formatTripFields(String trip) {
         String[] tripSplit = trip.split(";");
 
