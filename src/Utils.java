@@ -1,8 +1,24 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class Utils {
     public void generateDbFile(String filename) {
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter(filename));
+            out.print("101;Daugavpils;07/07/2024;2;100.00;TRAIN\n" +
+                    "102;Warsaw;15/05/2025;7;300.00;BUS\n" +
+                    "103;Berlin;12/03/2025;3;500.50;PLANE\n" +
+                    "104;Stockholm;10/06/2026;2;400.00;BOAT\n" +
+                    "105;New York;16/12/2025;7;1000.00;PLANE");
 
+            out.close();
+            System.gc();
+        } catch (Exception ex) {
+            System.out.println("Error during creating default db.csv: " + ex.getMessage());
+            return;
+        }
+        System.out.println("Created default db.csv");
     }
 
     public boolean isDbFileExists(String filename) {

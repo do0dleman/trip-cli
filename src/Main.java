@@ -14,6 +14,10 @@ public class Main {
 
     public static void main(String[] args) {
         String[] commandLine;
+        if(!utils.isDbFileExists(filename)) {
+            utils.generateDbFile(filename);
+        }
+
         print();
         loop: while (true) {
             commandLine = sc.nextLine().split(" ");
